@@ -6,12 +6,14 @@
 
 static void button_event_cb(lv_event_t * e)
 {
+    static int led_on = 0;
+
     lv_obj_t * label = lv_event_get_user_data(e);
 
     if(lv_event_get_code(e) == LV_EVENT_CLICKED) {
-        const char * text = lv_label_get_text(label);
+        led_on = !led_on;
 
-        if(text[4] == 'O' && text[5] == 'F') {
+        if(led_on) {
             lv_label_set_text(label, "LED 1 ON");
             printf("LED 1 ON\n");
         } else {
@@ -61,6 +63,7 @@ int main(void)
     lv_obj_add_event_cb(button, button_event_cb, LV_EVENT_CLICKED, label);
 
     while(1) {
+        lv_ticker_inc(5);
         lv_timer_handler();
         usleep(5000);
     }
