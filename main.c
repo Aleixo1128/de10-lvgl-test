@@ -63,7 +63,7 @@ int main(void)
     lv_obj_add_event_cb(button, button_event_cb, LV_EVENT_CLICKED, label);
 
     while(1) {
-        lv_ticker_inc(5);
+        lv_tick_inc(5);
         lv_timer_handler();
         usleep(5000);
     }
