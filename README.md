@@ -1,28 +1,25 @@
 # de10-lvgl-test
 
 
-static void button_event_cb(lv_event_t * e)
-{
-    static int led_on = 0;
-
-    lv_obj_t * label = lv_event_get_user_data(e);
-
-    if(lv_event_get_code(e) == LV_EVENT_CLICKED) {
-        led_on = !led_on;
-
-        if(led_on) {
-            lv_label_set_text(label, "LED 1 ON");
-            printf("LED 1 ON\n");
-        } else {
-            lv_label_set_text(label, "LED 1 OFF");
-            printf("LED 1 OFF\n");
-        }
-    }
-}
 
 
-while(1) {
-    lv_tick_inc(5);
-    lv_timer_handler();
-    usleep(5000);
-}
+CC = gcc
+
+CFLAGS = -std=gnu99 -O2 -I/home/root -I/home/root/lvgl -I/home/root/lv_drivers
+
+LIBS = -lm -lpthread
+
+LVGL_SRC = $(shell find /home/root/lvgl/src -name '*.c')
+
+DRIVER_SRC = /home/root/lv_drivers/display/fbdev.c \
+             /home/root/lv_drivers/indev/evdev.c
+
+all: lvgl_test
+
+lvgl_test: main.c
+	$(CC) $(CFLAGS) -o $@ main.c $(DRIVER_SRC) $(LVGL_SRC) $(LIBS)
+
+clean:
+	rm -f lvgl_test
+
+.PHONY: all clean
